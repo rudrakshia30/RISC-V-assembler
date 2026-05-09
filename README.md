@@ -18,7 +18,7 @@ This project is a **custom-built RISC-V RV32I Assembler** written in Python.
 It reads assembly instructions from a file, validates them, resolves labels, checks for errors, and converts everything into proper **32-bit binary machine code**.
 
 Think of it as a mini version of what real assemblers do inside actual processors.
-
+This is a group project with my 3 team members.
 ---
 
 # 🧠 What This Assembler Supports
