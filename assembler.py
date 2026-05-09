@@ -207,14 +207,14 @@ def main(inline,f2):
 def immcheck(imm,n,f2):
 
     if imm.lstrip('-').isdigit() != True:     
-        print(f"invalid immediate in line number {lnum+labelno1}")
+        print(f"invalid immediate in line number {lnum+labelno1+el}")
         fltrun(f2) 
 
     if int(imm)>=-(2**(n-1)) and int(imm)<=(2**(n-1))-1:
         return
     
     else:
-        print(f"immediate out of range in line number {lnum+labelno1}")
+        print(f"immediate out of range in line number {lnum+labelno1+el}")
         fltrun(f2)
 
 def bin_nbits(x,n):
@@ -317,11 +317,11 @@ name = {
 def btype(l,f2):
 
     if (len(l)!=4):
-        print(f"Error in line {lnum+labelno1}, invalid number of arguments")
+        print(f"Error in line {lnum+labelno1+el}, invalid number of arguments")
         fltrun(f2)
 
-    chk_reg(l[1], lnum, f2,labelno1)
-    chk_reg(l[2], lnum, f2,labelno1)
+    chk_reg(l[1], lnum, f2,labelno1+el)
+    chk_reg(l[2], lnum, f2,labelno1+el)
 
     s=''
 
@@ -332,7 +332,7 @@ def btype(l,f2):
 
         immcheck(l[3],12,f2)
         if int(l[3]) % 2 != 0:
-            print(f"Branch immediate is not a multiple of 2 at line {lnum+labelno1}")
+            print(f"Branch immediate is not a multiple of 2 at line {lnum+labelno1+el}")
             fltrun(f2)
 
         imm=compl(int(l[3])//2,12)
@@ -340,7 +340,7 @@ def btype(l,f2):
     else:
 
         if l[3] not in labels:
-            print(f"label used in line {lnum+labelno1} but not defined")
+            print(f"label used in line {lnum+labelno1+el} but not defined")
             fltrun(f2)
 
         offset=(labels[l[3]]-((lnum-1)*4))
@@ -372,11 +372,11 @@ def Iinstruction(l,f2):
     if l[0]=="lw" :
 
         if (len(l)!=4):
-            print(f"Error in line {lnum+labelno1}, invalid number of arguments")
+            print(f"Error in line {lnum+labelno1+el}, invalid number of arguments")
             fltrun(f2)
 
-        chk_reg(l[1], lnum, f2,labelno1) 
-        chk_reg(l[3], lnum, f2,labelno1) 
+        chk_reg(l[1], lnum, f2,labelno1+el) 
+        chk_reg(l[3], lnum, f2,labelno1+el) 
 
         immcheck((l[2]),12,f2)
 
@@ -385,11 +385,11 @@ def Iinstruction(l,f2):
     elif l[0]=="addi" or l[0]=="sltiu":
 
         if (len(l)!=4):
-            print(f"Error in line {lnum+labelno1}, invalid number of arguments")
+            print(f"Error in line {lnum+labelno1+el}, invalid number of arguments")
             fltrun(f2)
 
-        chk_reg(l[1], lnum, f2,labelno1) 
-        chk_reg(l[2], lnum, f2,labelno1)
+        chk_reg(l[1], lnum, f2,labelno1+el) 
+        chk_reg(l[2], lnum, f2,labelno1+el)
         immcheck((l[3]),12,f2)
 
         s+=compl(int(l[3]),12)+d[(l[2])]+dictI[l[0]].func3+d[(l[1])]+dictI[l[0]].opcode
@@ -397,11 +397,11 @@ def Iinstruction(l,f2):
     else:#jalr
         
         if (len(l)!=4):
-            print(f"Error in line {lnum+labelno1}, invalid number of arguments")
+            print(f"Error in line {lnum+labelno1+el}, invalid number of arguments")
             fltrun(f2)
 
-        chk_reg(l[1], lnum, f2,labelno1)
-        chk_reg(l[2], lnum, f2,labelno1)
+        chk_reg(l[1], lnum, f2,labelno1+el)
+        chk_reg(l[2], lnum, f2,labelno1+el)
         immcheck((l[3]),12,f2)
 
         s+=compl(int(l[3]),12) +d[l[2]]+"000"+d[l[1]]+"1100111"
@@ -410,10 +410,10 @@ def Iinstruction(l,f2):
 def J(l,f2):#jal
 
     if (len(l)!=3):
-            print(f"Error in line {lnum+labelno1}, invalid number of arguments")
+            print(f"Error in line {lnum+labelno1+el}, invalid number of arguments")
             fltrun(f2)
 
-    chk_reg(l[1],lnum,f2,labelno1)
+    chk_reg(l[1],lnum,f2,labelno1+el)
 
     s=""
 
@@ -421,13 +421,13 @@ def J(l,f2):#jal
 
         immcheck(l[2],20,f2)
         if int(l[2]) % 2 != 0:
-            print(f"Branch immediate is not a multiple of 2 at line {lnum+labelno1}")
+            print(f"Branch immediate is not a multiple of 2 at line {lnum+labelno1+el}")
             fltrun(f2)
 
         imm = compl(int(l[2])//2,20)
     else:
         if l[2] not in labels:
-            print(f"label used in line {lnum+labelno1} but not defined")
+            print(f"label used in line {lnum+labelno1+el} but not defined")
             fltrun(f2)
 
         offset=(labels[l[2]]-((lnum-1)*4))
@@ -458,21 +458,21 @@ def sw(l,f2):
     rs2 = l[1]
 
     if (len(l)!=4):
-        print(f"Error in line {lnum+labelno1}, invalid number of arguments")
+        print(f"Error in line {lnum+labelno1+el}, invalid number of arguments")
         fltrun(f2)
 
     if l[2].lstrip('-').isdigit():
         imm = int(l[2])
 
     else:
-        print(f"Invalid immediate in line number: {lnum+labelno1}")
+        print(f"Invalid immediate in line number: {lnum+labelno1+el}")
         fltrun(f2)
 
     if imm<=2**11-1 and imm>=-2**11:
         pass
 
     else:
-        print(f"Immediate out of range in line number: {lnum+labelno1}")
+        print(f"Immediate out of range in line number: {lnum+labelno1+el}")
         fltrun(f2)
 
     rs1 = l[3]
@@ -497,14 +497,14 @@ def auipc(l,f2):
 
     if (len(l)!=3):
 
-        print(f"Error in line {lnum+labelno1}, invalid number of arguments")
+        print(f"Error in line {lnum+labelno1+el}, invalid number of arguments")
         fltrun(f2)
 
     if l[2].lstrip('-').isdigit():
         imm = int(l[2])
 
     else:
-        print(f"Invalid immediate in line number: {lnum+labelno1}")
+        print(f"Invalid immediate in line number: {lnum+labelno1+el}")
         fltrun(f2)
 
     if imm<=2**19-1 and imm>=-2**19:
@@ -512,7 +512,7 @@ def auipc(l,f2):
 
     else:
 
-        print(f"Immediate out of range in line number: {lnum+labelno1}")
+        print(f"Immediate out of range in line number: {lnum+labelno1+el}")
         fltrun(f2)
 
     imm_b=compl(imm,20)
@@ -526,21 +526,21 @@ def lui(l,f2):
     op="0110111"
 
     if (len(l)!=3):
-        print(f"Error in line {lnum+labelno1}, invalid number of arguments")
+        print(f"Error in line {lnum+labelno1+el}, invalid number of arguments")
         fltrun(f2)
 
     if l[2].lstrip('-').isdigit():
         imm = int(l[2])
 
     else:
-        print(f"Invalid immediate in line number: {lnum+labelno1}")
+        print(f"Invalid immediate in line number: {lnum+labelno1+el}")
         fltrun(f2)
 
     if imm<=2**19-1 and imm>=-2**19:          
         pass
 
     else:
-        print(f"Immediate out of range in line number: {lnum+labelno1}")
+        print(f"Immediate out of range in line number: {lnum+labelno1+el}")
         fltrun(f2)
 
     imm_b=compl(imm,20)
